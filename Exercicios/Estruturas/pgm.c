@@ -37,7 +37,7 @@ int main(int argc, char **argv){
     printf("\n\nPGM: \n\n");
     PGM_show(image_01);
 
-    return 1;
+    return 0;
 }
 
 void kill(){
