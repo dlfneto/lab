@@ -12,6 +12,7 @@ typedef struct pgm{
 void kill();
 
 int PGM_create(PGM *, unsigned, unsigned, unsigned);
+int PGM_save(PGM, char *);
 void PGM_random_generate(PGM *);
 void PGM_show(PGM);
 
@@ -36,6 +37,9 @@ int main(int argc, char **argv){
 
     printf("\n\nPGM: \n\n");
     PGM_show(image_01);
+
+    if(!PGM_save(image_01, "image_")) 
+        printf("Failed to save image!\n");
 
     return 0;
 }
@@ -85,4 +89,35 @@ void PGM_show(PGM image){
         printf("\n");
     }
     printf("\n");
+}
+
+int PGM_save(PGM image, char * name){
+
+    FILE * pgm_file = NULL;
+    char file_name[256];
+
+    sprintf(file_name, "./images/%s%ld.pgm", name, time(NULL));
+
+    pgm_file = fopen(file_name, "w");
+    if(!pgm_file) return 0;
+
+    fprintf(pgm_file, "%s\n%d %d\n%d\n", "P2", image.w, image.h, image.max_value);
+
+    int max_value = image.max_value;
+    int margin = 3;
+    while(max_value > 10){
+        margin+=1;
+        max_value /= 10;
+    } 
+    
+    for(int i = 0; i < image.h; i++){
+        for(int j = 0; j < image.w; j++){
+            fprintf(pgm_file, "%*d", margin, *(*(image.pixels+i)+j));
+        }
+        fprintf(pgm_file, "\n");
+    }
+
+    fclose(pgm_file);
+
+    return 1;
 }
