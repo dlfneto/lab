@@ -16,6 +16,15 @@ float average(int * arr, int size){
 float median(int * arr, int size){
     float res = 0;
 
+    for(int i = 0; i < size; i++)
+        for(int j = 0; j < size-1-i; j++){
+            if(*(arr+j) > *(arr+j+1)){
+                *(arr+j) ^= *(arr+j+1);
+                *(arr+j+1) ^= *(arr+j);
+                *(arr+j) ^= *(arr+j+1);
+            }
+        }
+
     if(!(size%2)) res = (float) (*(arr+(size/2)) + *(arr+(size/2)-1)) / (float) 2;
     else res = *(arr + (size/2));
 
